@@ -1,14 +1,15 @@
 import React from 'react';
 import { Container, Typography, Grid, Card, CardContent, CardMedia, Box, Chip, Stack } from '@mui/material';
 import { motion } from 'framer-motion';
+import GlutenFreeRecipeFinder from './crawler';
 
 const projectList = [
   {
-    title: 'EcoTrack Analytics Platform',
-    description: 'A real-time environmental monitoring dashboard built with React and Node.js. Features include interactive data visualization, predictive analytics using machine learning models, and automated reporting systems. Achieved 40% improvement in data processing efficiency.',
-    image: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?auto=format&fit=crop&q=80',
-    technologies: ['React', 'Node.js', 'TensorFlow.js', 'AWS', 'D3.js'],
-    link: 'https://github.com/example/ecotrack'
+    title: 'Gluten-Free Recipe Finder',
+    description: 'An intelligent web application that helps people with Celiac Disease find gluten-free recipes and ingredient substitutions. Features a modern UI with real-time search and comprehensive ingredient alternatives.',
+    image: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&q=80',
+    technologies: ['React', 'Material-UI', 'Framer Motion'],
+    link: 'https://github.com/BobbyChiller/Portfolio/tree/main/src/pages/projects/crawler'
   },
   {
     title: 'SecureChat Messenger',
@@ -44,11 +45,11 @@ const Projects = () => {
               mb: 4
             }}
           >
-            Projects
+            Featured Projects
           </Typography>
           <Grid container spacing={4}>
             {projectList.map((project, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
+              <Grid item xs={12} md={4} key={index}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -58,7 +59,7 @@ const Projects = () => {
                     sx={{ 
                       height: '100%', 
                       display: 'flex', 
-                      flexDirection: 'column', 
+                      flexDirection: 'column',
                       bgcolor: 'rgba(0, 188, 212, 0.05)',
                       border: '1px solid rgba(0, 188, 212, 0.1)',
                       transition: 'all 0.3s ease-in-out',
@@ -79,7 +80,7 @@ const Projects = () => {
                         borderBottom: '1px solid rgba(0, 188, 212, 0.1)'
                       }}
                     />
-                    <CardContent>
+                    <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                       <Typography 
                         gutterBottom 
                         variant="h5" 
@@ -97,7 +98,7 @@ const Projects = () => {
                         sx={{ 
                           color: '#fff',
                           mb: 3,
-                          lineHeight: 1.6
+                          flexGrow: 1
                         }}
                       >
                         {project.description}
@@ -125,6 +126,29 @@ const Projects = () => {
               </Grid>
             ))}
           </Grid>
+          
+          <Box 
+            sx={{ 
+              mt: 8,
+              bgcolor: 'rgba(0, 188, 212, 0.03)',
+              borderRadius: 2,
+              p: 3,
+              border: '1px solid rgba(0, 188, 212, 0.1)'
+            }}
+          >
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                color: '#00bcd4',
+                fontWeight: 600,
+                mb: 3,
+                textAlign: 'center'
+              }}
+            >
+              Live Demo: Gluten-Free Recipe Finder
+            </Typography>
+            <GlutenFreeRecipeFinder />
+          </Box>
         </motion.div>
       </Box>
     </Container>

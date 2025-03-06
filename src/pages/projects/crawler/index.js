@@ -1,81 +1,291 @@
-import React, { useState } from 'react';
-import { Container, Typography, Box, TextField, Button, Card, CardContent, Chip, Stack, CircularProgress } from '@mui/material';
+import React, { useState, useCallback } from 'react';
+import { Container, Typography, Box, TextField, Button, Card, CardContent, Chip, Stack, IconButton, Slider, List, ListItem, ListItemText, Divider, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { motion } from 'framer-motion';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
-// Mock data for gluten-free substitutions
-const mockRecipes = [
-  {
-    title: "Classic Chocolate Chip Cookies (Gluten-Free)",
-    description: "Soft, chewy chocolate chip cookies that are completely gluten-free. These cookies have the perfect texture and taste just like traditional cookies!",
-    glutenSubstitutes: [
-      { original: "all-purpose flour", substitute: "almond flour + rice flour blend" },
-      { original: "wheat flour", substitute: "gluten-free all-purpose flour" }
-    ],
-    source: "Celiac-Friendly Desserts",
-    url: "https://example.com/gf-chocolate-chip-cookies"
-  },
-  {
-    title: "Homemade Pizza Crust",
-    description: "A crispy, delicious pizza crust that's perfect for your favorite toppings. This recipe creates a crust that holds together well and has great texture.",
-    glutenSubstitutes: [
-      { original: "bread flour", substitute: "cauliflower" },
-      { original: "wheat flour", substitute: "chickpea flour + tapioca starch" }
-    ],
-    source: "Gluten-Free Kitchen",
-    url: "https://example.com/gf-pizza-crust"
-  },
-  {
-    title: "Hearty Sandwich Bread",
-    description: "Finally, a gluten-free bread that's soft, doesn't crumble, and tastes amazing! Perfect for sandwiches or toast.",
-    glutenSubstitutes: [
-      { original: "bread flour", substitute: "brown rice flour + potato starch" },
-      { original: "vital wheat gluten", substitute: "xanthan gum" }
-    ],
-    source: "Celiac Baking Guide",
-    url: "https://example.com/gf-sandwich-bread"
-  }
-];
-
-const searchSuggestions = [
-  "bread",
-  "pasta",
-  "cookies",
-  "cake",
-  "pizza",
-  "muffins",
-  "pancakes"
-];
+// Import the mock recipes from a separate file to keep this component clean
+import { mockRecipes } from './mockData';
 
 const GlutenFreeRecipeFinder = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [expandedRecipes, setExpandedRecipes] = useState({});
+  const [servings, setServings] = useState({});
+
+  const toggleRecipeExpansion = (recipeId) => {
+    setExpandedRecipes(prev => ({
+      ...prev,
+      [recipeId]: !prev[recipeId]
+    }));
+  };
+
+  const adjustServings = (recipeId, delta) => {
+    setServings(prev => {
+      const currentServings = prev[recipeId] || recipes.find(r => r.id === recipeId).defaultServings;
+      const newServings = Math.max(1, currentServings + delta);
+      return {
+        ...prev,
+        [recipeId]: newServings
+      };
+    });
+  };
+
+  const calculateAdjustedAmount = useCallback((amount, originalServings, targetServings) => {
+    const numericAmount = parseFloat(amount);
+    if (isNaN(numericAmount)) return amount;
+    
+    const ratio = targetServings / originalServings;
+    const adjusted = (numericAmount * ratio).toFixed(2);
+    // Remove trailing zeros after decimal point
+    return adjusted.replace(/\.?0+$/, '');
+  }, []);
 
   const searchRecipes = () => {
     setLoading(true);
-    // Simulate API call
+    // Simulate API call with mock data
     setTimeout(() => {
       const filteredRecipes = mockRecipes.filter(recipe =>
         recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        recipe.description.toLowerCase().includes(searchTerm.toLowerCase())
+        recipe.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        recipe.ingredients.some(ing => ing.item.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        recipe.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
       );
       setRecipes(filteredRecipes);
+      // Initialize servings state for new recipes
+      const newServings = {};
+      filteredRecipes.forEach(recipe => {
+        newServings[recipe.id] = recipe.defaultServings;
+      });
+      setServings(newServings);
       setLoading(false);
       setSearched(true);
-    }, 1000);
+    }, 500);
   };
 
   const handleSuggestionClick = (suggestion) => {
     setSearchTerm(suggestion);
     setLoading(true);
     setTimeout(() => {
-      setRecipes(mockRecipes.filter(recipe =>
+      const filteredRecipes = mockRecipes.filter(recipe =>
+        recipe.tags.includes(suggestion.toLowerCase()) ||
         recipe.title.toLowerCase().includes(suggestion.toLowerCase())
-      ));
+      );
+      setRecipes(filteredRecipes);
+      const newServings = {};
+      filteredRecipes.forEach(recipe => {
+        newServings[recipe.id] = recipe.defaultServings;
+      });
+      setServings(newServings);
       setLoading(false);
       setSearched(true);
-    }, 1000);
+    }, 500);
+  };
+
+  const Recipe = ({ recipe }) => {
+    const [localServings, setLocalServings] = useState(recipe.defaultServings);
+    
+    const handleServingChange = (e) => {
+      const value = parseInt(e.target.value);
+      if (!isNaN(value) && value > 0) {
+        setLocalServings(value);
+      }
+    };
+
+    const adjustedIngredients = recipe.ingredients.map(ing => ({
+      ...ing,
+      amount: ((parseFloat(ing.amount) * localServings) / recipe.defaultServings).toFixed(2)
+    }));
+
+    const nutrition = recipe.nutrition;
+
+    return (
+      <Card 
+        component={motion.div}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        sx={{ 
+          mb: 3, 
+          bgcolor: 'background.paper',
+          borderRadius: 2,
+          boxShadow: 3
+        }}
+      >
+        <CardContent>
+          {recipe.image && (
+            <Box 
+              component="img"
+              src={recipe.image}
+              alt={recipe.title}
+              sx={{
+                width: '100%',
+                height: 300,
+                objectFit: 'cover',
+                borderRadius: 1,
+                mb: 2
+              }}
+            />
+          )}
+          
+          <Typography variant="h5" gutterBottom color="primary">
+            {recipe.title}
+          </Typography>
+          
+          <Typography variant="body1" color="text.secondary" paragraph>
+            {recipe.description}
+          </Typography>
+
+          <Box sx={{ mb: 2 }}>
+            {recipe.tags.map((tag) => (
+              <Chip
+                key={tag}
+                label={tag}
+                sx={{ 
+                  mr: 1, 
+                  mb: 1,
+                  bgcolor: 'primary.main',
+                  color: 'white',
+                  '&:hover': {
+                    bgcolor: 'primary.dark'
+                  }
+                }}
+              />
+            ))}
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+            <IconButton 
+              onClick={() => setLocalServings(Math.max(1, localServings - 1))}
+              color="primary"
+            >
+              <RemoveIcon />
+            </IconButton>
+            <TextField
+              value={localServings}
+              onChange={handleServingChange}
+              type="number"
+              size="small"
+              sx={{ width: 80, mx: 1 }}
+              inputProps={{ min: 1 }}
+            />
+            <IconButton 
+              onClick={() => setLocalServings(localServings + 1)}
+              color="primary"
+            >
+              <AddIcon />
+            </IconButton>
+            <Typography variant="body1" sx={{ ml: 1 }}>
+              servings
+            </Typography>
+          </Box>
+
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h6" gutterBottom color="primary">
+                Ingredients
+              </Typography>
+              <List>
+                {adjustedIngredients.map((ing, index) => (
+                  <ListItem key={index} sx={{ py: 0.5 }}>
+                    <ListItemText>
+                      {ing.amount} {ing.unit} {ing.item}
+                    </ListItemText>
+                  </ListItem>
+                ))}
+              </List>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              {nutrition && (
+                <>
+                  <Typography variant="h6" gutterBottom color="primary">
+                    Nutrition Facts (per serving)
+                  </Typography>
+                  <TableContainer component={Paper} sx={{ mb: 3 }}>
+                    <Table size="small">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>Serving Size</TableCell>
+                          <TableCell>{nutrition.servingSize}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Calories</TableCell>
+                          <TableCell>{nutrition.calories}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Protein</TableCell>
+                          <TableCell>{nutrition.protein}g</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Carbohydrates</TableCell>
+                          <TableCell>{nutrition.carbohydrates}g</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Fat</TableCell>
+                          <TableCell>{nutrition.fat}g</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Fiber</TableCell>
+                          <TableCell>{nutrition.fiber}g</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Sugar</TableCell>
+                          <TableCell>{nutrition.sugar}g</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Sodium</TableCell>
+                          <TableCell>{nutrition.sodium}mg</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </>
+              )}
+            </Grid>
+          </Grid>
+
+          <Typography variant="h6" gutterBottom color="primary" sx={{ mt: 2 }}>
+            Instructions
+          </Typography>
+          <List>
+            {recipe.instructions.map((step, index) => (
+              <React.Fragment key={index}>
+                <ListItem>
+                  <ListItemText>
+                    <Typography variant="body1" color="text.primary">
+                      {index + 1}. {step}
+                    </Typography>
+                  </ListItemText>
+                </ListItem>
+                {index < recipe.instructions.length - 1 && <Divider />}
+              </React.Fragment>
+            ))}
+          </List>
+
+          {recipe.glutenSubstitutes && (
+            <>
+              <Typography variant="h6" gutterBottom color="primary" sx={{ mt: 3 }}>
+                Gluten-Free Substitutions
+              </Typography>
+              <List>
+                {recipe.glutenSubstitutes.map((sub, index) => (
+                  <ListItem key={index}>
+                    <ListItemText>
+                      Replace {sub.original} with {sub.substitute}
+                    </ListItemText>
+                  </ListItem>
+                ))}
+              </List>
+            </>
+          )}
+        </CardContent>
+      </Card>
+    );
   };
 
   return (
@@ -106,14 +316,14 @@ const GlutenFreeRecipeFinder = () => {
               opacity: 0.9
             }}
           >
-            Search for your favorite recipes and discover gluten-free alternatives. Perfect for people with Celiac Disease or gluten sensitivities.
+            Search through our collection of over 200 gluten-free recipes. Adjust serving sizes and discover ingredient substitutions.
           </Typography>
 
           <Box sx={{ mb: 4 }}>
             <TextField
               fullWidth
               variant="outlined"
-              placeholder="Search for a recipe (e.g., 'chocolate cake', 'bread', 'pasta')"
+              placeholder="Search by recipe name, ingredient, or category (e.g., 'pasta', 'bread', 'dessert')"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyPress={(e) => {
@@ -147,15 +357,15 @@ const GlutenFreeRecipeFinder = () => {
                 },
               }}
             >
-              {loading ? <CircularProgress size={24} color="inherit" /> : 'Search Recipes'}
+              Search Recipes
             </Button>
 
             <Box sx={{ mt: 2 }}>
               <Typography variant="subtitle2" sx={{ color: '#00bcd4', mb: 1 }}>
-                Popular searches:
+                Popular categories:
               </Typography>
               <Stack direction="row" spacing={1} flexWrap="wrap" gap={1}>
-                {searchSuggestions.map((suggestion, index) => (
+                {['Breakfast', 'Main Course', 'Dessert', 'Snacks', 'Bread', 'Pasta', 'Pizza'].map((suggestion, index) => (
                   <Chip
                     key={index}
                     label={suggestion}
@@ -178,85 +388,28 @@ const GlutenFreeRecipeFinder = () => {
           <Box sx={{ mt: 4 }}>
             {loading ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                <CircularProgress sx={{ color: '#00bcd4' }} />
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                >
+                  <Box
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: '50%',
+                      border: '3px solid rgba(0, 188, 212, 0.2)',
+                      borderTop: '3px solid #00bcd4'
+                    }}
+                  />
+                </motion.div>
               </Box>
             ) : searched && recipes.length === 0 ? (
               <Typography sx={{ color: '#fff', textAlign: 'center', mt: 4 }}>
                 No recipes found. Try a different search term!
               </Typography>
             ) : (
-              recipes.map((recipe, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <Card 
-                    sx={{ 
-                      mb: 2,
-                      bgcolor: 'rgba(0, 188, 212, 0.05)',
-                      border: '1px solid rgba(0, 188, 212, 0.1)',
-                      '&:hover': {
-                        bgcolor: 'rgba(0, 188, 212, 0.08)',
-                        border: '1px solid rgba(0, 188, 212, 0.2)'
-                      }
-                    }}
-                  >
-                    <CardContent>
-                      <Typography variant="h5" sx={{ color: '#00bcd4', mb: 2 }}>
-                        {recipe.title}
-                      </Typography>
-                      <Typography variant="body2" sx={{ mb: 2, color: '#fff' }}>
-                        {recipe.description}
-                      </Typography>
-                      
-                      {recipe.glutenSubstitutes && (
-                        <Box sx={{ mb: 2 }}>
-                          <Typography variant="subtitle2" sx={{ color: '#00bcd4', mb: 1 }}>
-                            Gluten-Free Substitutions:
-                          </Typography>
-                          <Stack direction="row" spacing={1} flexWrap="wrap" gap={1}>
-                            {recipe.glutenSubstitutes.map((sub, i) => (
-                              <Chip
-                                key={i}
-                                label={`${sub.original} → ${sub.substitute}`}
-                                size="small"
-                                sx={{
-                                  bgcolor: 'rgba(0, 188, 212, 0.1)',
-                                  color: '#00bcd4',
-                                  border: '1px solid rgba(0, 188, 212, 0.2)',
-                                }}
-                              />
-                            ))}
-                          </Stack>
-                        </Box>
-                      )}
-                      
-                      <Box>
-                        <Typography variant="subtitle2" sx={{ color: '#00bcd4', mb: 1 }}>
-                          Source:
-                        </Typography>
-                        <Typography 
-                          variant="body2" 
-                          component="a" 
-                          href={recipe.url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          sx={{ 
-                            color: '#00bcd4',
-                            textDecoration: 'none',
-                            '&:hover': {
-                              textDecoration: 'underline'
-                            }
-                          }}
-                        >
-                          {recipe.source}
-                        </Typography>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+              recipes.map((recipe) => (
+                <Recipe key={recipe.id} recipe={recipe} />
               ))
             )}
           </Box>

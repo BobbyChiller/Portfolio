@@ -5,7 +5,7 @@ export const mockRecipes = [
     title: "Quinoa Breakfast Bowl",
     description: "A warm, protein-rich breakfast bowl with quinoa, berries, and nuts.",
     defaultServings: 2,
-    image: "https://images.unsplash.com/photo-1624300629298-e9de39c13be5?w=500",
+    image: "https://www.justataste.com/wp-content/uploads/2015/01/best-quinoa-breakfast-bowls-recipe-1.jpg",
     nutrition: {
       servingSize: "1 bowl (350g)",
       calories: 385,
@@ -45,7 +45,7 @@ export const mockRecipes = [
     title: "Thai Green Papaya Salad",
     description: "Fresh and spicy Thai salad with shredded green papaya, tomatoes, and a zesty lime dressing.",
     defaultServings: 4,
-    image: "https://images.unsplash.com/photo-1637196326903-c2e12b38eb67?w=500",
+    image: "https://www.lifewithoutmeat.com/wp-content/uploads/2019/09/papaya-salad-instagram-15-735x919.jpg",
     nutrition: {
       servingSize: "1.5 cups (200g)",
       calories: 120,
@@ -87,7 +87,7 @@ export const mockRecipes = [
     title: "Chicken Marsala",
     description: "Classic Italian chicken dish made gluten-free with rice flour.",
     defaultServings: 4,
-    image: "https://images.unsplash.com/photo-1594040226829-7f251ab46d80?w=500",
+    image: "https://www.saltandlavender.com/wp-content/uploads/2019/10/chicken-marsala-2.jpg",
     nutrition: {
       servingSize: "1 chicken breast with sauce (250g)",
       calories: 420,
@@ -135,7 +135,7 @@ export const mockRecipes = [
     title: "Mediterranean Chickpea Salad",
     description: "Light and refreshing chickpea salad with Mediterranean flavors.",
     defaultServings: 6,
-    image: "https://images.unsplash.com/photo-1606497389772-3f0acd7f9aae?w=500",
+    image: "https://www.themediterraneandish.com/wp-content/uploads/2023/12/TMD-Chickpea-Salad-Leads-01-Angle-Vertical.jpg",
     nutrition: {
       servingSize: "1.5 cups (225g)",
       calories: 280,
@@ -182,7 +182,7 @@ export const mockRecipes = [
     title: "Pad Thai",
     description: "Classic Thai noodle dish made with rice noodles.",
     defaultServings: 4,
-    image: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=500",
+    image: "https://www.simplyquinoa.com/wp-content/uploads/2022/01/30-minute-tofu-pad-thai-2.jpg",
     nutrition: {
       servingSize: "2 cups (350g)",
       calories: 460,
@@ -233,7 +233,7 @@ export const mockRecipes = [
     title: "Shakshuka",
     description: "Middle Eastern eggs poached in spiced tomato sauce.",
     defaultServings: 4,
-    image: "https://images.unsplash.com/photo-1590412200988-a436970781fa?w=500",
+    image: "https://i2.wp.com/www.downshiftology.com/wp-content/uploads/2023/12/Shakshuka-3-2.jpg",
     nutrition: {
       servingSize: "2 eggs with sauce (300g)",
       calories: 340,
@@ -276,99 +276,10 @@ export const mockRecipes = [
 
   {
     id: 7,
-    title: "Chocolate Almond Torte",
-    description: "Rich, flourless chocolate cake with ground almonds.",
-    defaultServings: 12,
-    image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500",
-    nutrition: {
-      servingSize: "1 slice (100g)",
-      calories: 380,
-      protein: 8,
-      carbohydrates: 28,
-      fat: 26,
-      fiber: 4,
-      sugar: 22,
-      sodium: 95
-    },
-    tags: ["dessert", "chocolate", "special occasion"],
-    ingredients: [
-      { amount: "200", unit: "g", item: "dark chocolate (70% cocoa), chopped" },
-      { amount: "200", unit: "g", item: "unsalted butter, cubed" },
-      { amount: "200", unit: "g", item: "ground almonds" },
-      { amount: "6", unit: "large", item: "eggs, separated" },
-      { amount: "200", unit: "g", item: "granulated sugar" },
-      { amount: "1", unit: "tsp", item: "vanilla extract" },
-      { amount: "0.25", unit: "tsp", item: "salt" },
-      { amount: "2", unit: "tbsp", item: "cocoa powder for dusting" }
-    ],
-    instructions: [
-      "Preheat oven to 325°F (165°C). Grease a 9-inch springform pan and line the bottom with parchment paper.",
-      "Set up a double boiler: Place chocolate and butter in a heatproof bowl over a pan of simmering water (don't let bowl touch water).",
-      "Stir occasionally until chocolate and butter are completely melted and smooth. Remove from heat and let cool slightly.",
-      "In a large bowl, whisk egg yolks with half the sugar until pale and creamy, about 3-4 minutes.",
-      "Stir the melted chocolate mixture into the egg yolk mixture. Add vanilla extract.",
-      "Fold in ground almonds until well combined.",
-      "In a clean bowl, beat egg whites and salt until soft peaks form. Gradually add remaining sugar, beating until stiff, glossy peaks form.",
-      "Gently fold one-third of egg whites into chocolate mixture to lighten it.",
-      "Fold in remaining egg whites in two additions, being careful not to deflate the batter.",
-      "Pour batter into prepared pan and smooth the top.",
-      "Bake for 45-50 minutes until cake is set but still slightly wobbly in center.",
-      "Cool completely in pan on a wire rack. Cake will sink slightly as it cools.",
-      "Run a knife around edge of pan before releasing springform.",
-      "Dust with cocoa powder before serving. Store covered at room temperature for up to 3 days."
-    ]
-  },
-
-  {
-    id: 8,
-    title: "Vietnamese Summer Rolls",
-    description: "Fresh rice paper rolls with shrimp and vegetables.",
-    defaultServings: 4,
-    image: "https://images.unsplash.com/photo-1553530979-fbb9e4aee36f?w=500",
-    nutrition: {
-      servingSize: "3 rolls (240g)",
-      calories: 280,
-      protein: 14,
-      carbohydrates: 42,
-      fat: 8,
-      fiber: 3,
-      sugar: 4,
-      sodium: 520
-    },
-    tags: ["appetizer", "vietnamese", "asian", "lunch"],
-    ingredients: [
-      { amount: "12", unit: "", item: "rice paper wrappers" },
-      { amount: "4", unit: "oz", item: "rice vermicelli noodles" },
-      { amount: "12", unit: "large", item: "shrimp, cooked and halved lengthwise" },
-      { amount: "1", unit: "cup", item: "carrots, julienned" },
-      { amount: "1", unit: "cup", item: "cucumber, julienned" },
-      { amount: "2", unit: "cups", item: "lettuce leaves" },
-      { amount: "1", unit: "cup", item: "fresh mint leaves" },
-      { amount: "1", unit: "cup", item: "fresh cilantro" },
-      { amount: "1", unit: "cup", item: "fresh basil leaves" },
-      { amount: "0.25", unit: "cup", item: "peanuts, chopped" }
-    ],
-    instructions: [
-      "Cook rice vermicelli according to package instructions. Drain and rinse with cold water.",
-      "Fill a large bowl with warm water. Working with one rice paper at a time, dip into water for 5 seconds.",
-      "Place wrapper on a clean, damp kitchen towel. Wait 30 seconds for it to soften completely.",
-      "On the bottom third of the wrapper, place 2-3 shrimp halves in a row, pink side down.",
-      "Layer with a small portion of noodles, vegetables, herbs, and peanuts.",
-      "Fold the bottom edge up over the filling, then fold in the sides.",
-      "Roll tightly from bottom to top, like a burrito, keeping filling compact.",
-      "Place finished rolls on a plate lined with damp paper towels. Cover with plastic wrap if not serving immediately.",
-      "Serve within 2 hours with peanut or hoisin dipping sauce.",
-      "For best results, don't stack rolls and keep them at room temperature.",
-      "Pro tip: Keep ingredients separated and organized for efficient assembly."
-    ]
-  },
-
-  {
-    id: 9,
     title: "Quinoa Stuffed Bell Peppers",
     description: "Colorful bell peppers stuffed with quinoa and vegetables.",
-    defaultServings: 6,
-    image: "https://images.unsplash.com/photo-1625937286074-9ca519d5d9df?w=500",
+    defaultServings: 4,
+    image: "https://plantbasedonabudget.com/wp-content/uploads/2013/07/Vegan-Quinoa-Stuffed-Peppers-Plant-Based-on-a-Budget-1-2.jpg",
     nutrition: {
       servingSize: "1 stuffed pepper (250g)",
       calories: 320,
@@ -413,11 +324,11 @@ export const mockRecipes = [
   },
 
   {
-    id: 10,
+    id: 8,
     title: "Berry Chia Pudding",
     description: "Overnight chia seed pudding with fresh berries.",
     defaultServings: 4,
-    image: "https://images.unsplash.com/photo-1583499871880-de841d1ace2a?w=500",
+    image: "https://essentiallyemma.co.uk/wp-content/uploads/2019/06/F11A1079-scaled.jpg",
     nutrition: {
       servingSize: "1 cup (240g)",
       calories: 240,
@@ -451,50 +362,6 @@ export const mockRecipes = [
       "For meal prep, portion into individual jars and add toppings just before serving.",
       "Pro tip: For a smoother texture, blend the soaked chia pudding until creamy."
     ]
-  },
-
-  {
-    id: 11,
-    title: "Vietnamese Rice Paper Rolls",
-    description: "Fresh and healthy spring rolls with rice noodles and herbs.",
-    defaultServings: 4,
-    image: "https://images.unsplash.com/photo-1553607558-455f4310f6ec?w=500",
-    nutrition: {
-      servingSize: "3 rolls (240g)",
-      calories: 280,
-      protein: 14,
-      carbohydrates: 42,
-      fat: 8,
-      fiber: 3,
-      sugar: 4,
-      sodium: 520
-    },
-    tags: ["vietnamese", "appetizer", "lunch", "healthy"],
-    ingredients: [
-      { amount: "12", unit: "", item: "rice paper wrappers" },
-      { amount: "4", unit: "oz", item: "rice vermicelli noodles" },
-      { amount: "12", unit: "large", item: "shrimp, cooked and halved lengthwise" },
-      { amount: "1", unit: "cup", item: "carrots, julienned" },
-      { amount: "1", unit: "cup", item: "cucumber, julienned" },
-      { amount: "2", unit: "cups", item: "lettuce leaves" },
-      { amount: "1", unit: "cup", item: "fresh mint leaves" },
-      { amount: "1", unit: "cup", item: "fresh cilantro" },
-      { amount: "1", unit: "cup", item: "fresh basil leaves" },
-      { amount: "0.25", unit: "cup", item: "peanuts, chopped" }
-    ],
-    instructions: [
-      "Cook rice vermicelli according to package instructions. Drain and rinse with cold water.",
-      "Fill a large bowl with warm water. Working with one rice paper at a time, dip into water for 5 seconds.",
-      "Place wrapper on a clean, damp kitchen towel. Wait 30 seconds for it to soften completely.",
-      "On the bottom third of the wrapper, place 2-3 shrimp halves in a row, pink side down.",
-      "Layer with a small portion of noodles, vegetables, herbs, and peanuts.",
-      "Fold the bottom edge up over the filling, then fold in the sides.",
-      "Roll tightly from bottom to top, like a burrito, keeping filling compact.",
-      "Place finished rolls on a plate lined with damp paper towels. Cover with plastic wrap if not serving immediately.",
-      "Serve within 2 hours with peanut or hoisin dipping sauce.",
-      "For best results, don't stack rolls and keep them at room temperature.",
-      "Pro tip: Keep ingredients separated and organized for efficient assembly."
-    ]
   }
 ];
 
@@ -506,20 +373,42 @@ export const categories = [
   "appetizer",
   "main course",
   "dessert",
-  "salad",
   "snack",
-  "healthy",
-  "high-protein",
+  "salad",
+  "soup",
+  "side dish",
+  // Cuisine types
+  "italian",
+  "mediterranean",
+  "asian",
+  "thai",
+  "mexican",
+  "middle eastern",
+  "indian",
+  // Diet and ingredient categories
   "vegetarian",
   "vegan",
-  "thai",
-  "italian",
-  "asian",
-  "middle eastern",
-  "mediterranean",
-  "spicy",
-  "chocolate",
-  "special occasion"
+  "healthy",
+  "high-protein",
+  "dairy-free",
+  "egg-free",
+  "nut-free",
+  "soy-free",
+  // Special categories
+  "quick and easy",
+  "meal prep",
+  "special occasion",
+  "holiday",
+  // Cooking methods
+  "baked",
+  "grilled",
+  "no-cook",
+  "one-pot",
+  // Seasonal categories
+  "summer",
+  "winter",
+  "spring",
+  "fall"
 ];
 
 // Updated cuisine types
